@@ -1,0 +1,386 @@
+<script src="http://school.meshmellow.cn/static/matchpage/hungryshark/js/vue.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/tpl/default/static/live/css/alibaba.css">
+<script type="text/javascript" src="/tpl/default/static/js/layui/layui.all.js"></script>
+<link rel="stylesheet" type="text/css" href="/tpl/default/static/js/layui/css/layui.mobile.css">
+<!-- <link rel="stylesheet" type="text/css" href="/tpl/default/static/live/css/easyui.css">
+<link rel="stylesheet" type="text/css" href="/tpl/default/static/live/css/icon.css">
+<link rel="stylesheet" type="text/css" href="/tpl/default/static/live/css/demo.css">
+<script type="text/javascript" src="/tpl/default/static/live/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/tpl/default/static/live/js/jquery.min.js"></script>
+<script type="text/javascript" src="/tpl/default/static/live/js/jquery.easyui.mobile.js"></script> -->
+{include file="common/header"}
+    <div id="myself_vue">
+        <div class="get_page">
+            <div class="account_num"><div class="account_num_bac"><span>账户信息</span></div></div>
+            <ul class="idea_class">
+                <li  @click="show_edit_page"><span>昵称：</span><a href="javascript:void(0)"><span v-html="nickname"></span><span class="iconfont">&#xe735;</span></a></li>
+                <li  @click="show_edit_page"><span>性别：</span><a href="javascript:void(0)"><span v-html="sex"></span><span class="iconfont">&#xe735;</span></a></li>
+                <li><span>会员类型：</span><a href="javascript:void(0)"><span v-if="isVip" style="display: flex;align-items: center;"><i style="display: inline-block;width: 0.9rem;height: 0.9rem;margin-right: 0.3rem
+                "><img style="width: 100%" src="/tpl/default/static/live/img/member_img_level.png"></i>VIP会员</span><span v-else="isVip">非会员</span></a></li>
+                <li><span>会员日期：</span><a href="javascript:void(0)"><span>[[out_time|filter_out_time]]</span></a></li>
+            </ul>
+            <div class="account_num"><div class="account_num_bac"><span>基本信息</span></div></div>
+            <ul class="idea_class">
+                <li  @click="show_edit_page"><span>真实姓名：</span><a href="javascript:void(0)"><span v-html="realname"></span><span class="iconfont">&#xe735;</span></a></li>
+                <li  @click="show_edit_page"><span>出生年月：</span><a href="javascript:void(0)"><span v-html="birth"></span><span class="iconfont">&#xe735;</span></a></li>
+                <li  @click="show_edit_page"><span>所在学校：</span><a href="javascript:void(0)"><span>[[graduateschool]]</span><span class="iconfont">&#xe735;</span></a></li>
+                <li  @click="show_edit_page"><span>联系方式：</span><a href="javascript:void(0)"><span v-html="mobile"></span><span class="iconfont">&#xe735;</span></a></li>
+                <li  @click="show_edit_page"><span>联系邮箱：</span><a href="javascript:void(0)"><span v-html="email"></span><span class="iconfont">&#xe735;</span></a></li>
+            </ul>
+        </div>
+        <div class="edit_page">
+            <div class="account_num"><div class="account_num_bac"><span>账户信息</span></div></div>
+            <form class="account_form layui-form"  id="myform" name="myform" action="">
+                <p>
+                    <label class="account_edit_label">昵称：</label>
+                    <input class="account_edit_ipt" type="text" name="username" :placeholder="nickname" value="">
+                </p>
+                <p>
+                    <label class="account_edit_label">性别：</label>
+                    <input class="account_edit_ipt" type="text" name="sex" :placeholder="sex" value="">
+                </p>
+                 <div class="account_num"><div class="account_num_bac"><span>基本信息</span></div></div>
+                 <p>
+                    <label class="account_edit_label">真实姓名：</label>
+                    <input class="account_edit_ipt" type="text" name="realname" :placeholder="realname" value="">
+                </p>
+                <p>
+                    <label class="account_edit_label">出生年月：</label>
+                    <input class="account_edit_ipt layui-input" id='test1'  type="text" name="birth" :placeholder="birth" value="">
+                </p>
+                <p>
+                    <label class="account_edit_label">所在学校：</label>
+                    <input class="account_edit_ipt" type="text" name="graduateschool" :placeholder="graduateschool" value="">
+                </p>
+                <p>
+                    <label class="account_edit_label">联系方式：</label>
+                    <input class="account_edit_ipt" type="text" name="mobile" id="account_ipt" :placeholder="mobile" value="">
+                </p>
+                <p>
+                    <label class="account_edit_label">联系邮箱：</label>
+                    <input class="account_edit_ipt" type="text" name="email" :placeholder="email" value="">
+                </p>
+                <p class="sub_ipt" style="border: none">
+                    <a href="javascript:void(0)" @click="sub_a">保存</a>
+                    <a href="javascript:void(0)" @click="cancel_a">取消</a>
+                </p>
+            </form>
+        </div>
+        <input type="hidden" name="reserve_data" value="" id="reserve_data">
+    </div>
+    <style type="text/css">
+        @font-face {
+          font-family: 'iconfont';  /* project id 1419563 */
+          src: url('//at.alicdn.com/t/font_1419563_vg8k51zjg9.eot');
+          src: url('//at.alicdn.com/t/font_1419563_vg8k51zjg9.eot?#iefix') format('embedded-opentype'),
+          url('//at.alicdn.com/t/font_1419563_vg8k51zjg9.woff2') format('woff2'),
+          url('//at.alicdn.com/t/font_1419563_vg8k51zjg9.woff') format('woff'),
+          url('//at.alicdn.com/t/font_1419563_vg8k51zjg9.ttf') format('truetype'),
+          url('//at.alicdn.com/t/font_1419563_vg8k51zjg9.svg#iconfont') format('svg');
+        }
+        .account_form p{
+            border-bottom: 1px solid #eee;
+            padding: 0.3rem;
+            width: 95%;
+            margin:0 auto;
+        }
+        .account_edit_ipt{
+            width: 50%;
+            border:none;
+            padding: 0.3rem 0;
+            font-size: 0.9rem;
+            color: #888;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }   
+        .account_edit_label{
+            width: 30%;
+            font-size: 0.9rem;
+            color: #333333;
+        }
+        .iconfont{
+            font-size: 0.9rem
+        }
+    	.account_num{
+    		background: #f5f5f5;
+    		color: #333333;
+    		display: flex;
+    		align-items: center;
+    	}
+    	.account_num_bac{
+    		border-left: 0.3rem solid rgb(236, 82, 82);
+    		width: 95%;
+    		margin: 0.8rem auto;
+    		padding: 0.2rem 0;
+           /* border-right: 0.3rem solid rgba(255,255,255,0);*/
+            box-sizing: border-box;
+    	}
+        .account_num_bac span{
+            margin-left: 0.3rem;
+            margin-right: 0.3rem
+        }
+        .idea_class{
+            /*width: 95%;*/
+            /*margin: 0 2.5%;*/
+        }
+        .idea_class li a{
+            float: right;
+            margin-right: 2.5%;
+            color: #888888
+        }
+        .idea_class li>span{
+            margin-left: 2.5%
+        }
+        .idea_class li{
+            font-size: .9rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #eee
+        }
+        .edit_page{
+            display: none
+        }
+        .sub_ipt a{
+           padding: 0.5rem 1.8rem;
+           border: none;
+           outline: none;
+           float: right;
+           background: #3b9eff;
+           color: #fff;
+           margin-top:1rem 
+        }
+        .sub_ipt a:nth-child(2){
+           margin-right: 1rem
+        }
+    </style>
+    <script type="text/javascript">
+        function edit_uername(username){
+             $.ajax({
+                url:"http://cloud.meshmellow.cn/api/edituserinfo.html",
+                data:{
+                   key:"nickname",
+                   value:username
+                },
+                type:"POST",
+                success:function(res){
+                    function fresh(){
+                        window.location.reload()
+                      }
+                     setTimeout(fresh(),1000)
+                     //编辑昵称保存时定时刷新页面
+                } 
+             })
+        };
+        
+    </script>
+    <script type="text/javascript">
+    	var vm=new Vue({
+    		delimiters: ['[[',']]'],
+    		el:"#myself_vue",
+    		data:{
+    			item:[],
+    			nickname:"123",
+    			sex:"",
+    			isVip:"",
+    			out_time:"",
+                realname:"",
+                birth:"",
+                graduateschool:"",
+                email:"",
+                mobile:""
+    		},
+    		created:function(){
+    			var _this=this;
+    			_this.get_person();
+                _this.get_baseuser();
+    		},
+    		filters:{
+				filter_out_time:function (time){
+                        var timestamp = (new Date()).valueOf();
+                        var date=new Date(time*1000);
+                    if(date-timestamp>0){
+                        var Y=date.getFullYear()+'-';
+                        var M=(date.getMonth()+1<10?'0'+(date.getMonth()+1):date.getMonth()+1)+'-';
+                        var D=date.getDate()+"到期"
+                        return Y+M+D
+                    }else{
+                        return "已到期"
+                    }
+				}
+			},
+            //日期的时间戳转换
+    		computed:{
+    			get_data:function(){
+    				var _this=this;
+    			}
+    		},
+            mounted:function(){
+                    layui.use(['laydate','form'], function(){
+                    var laydate = layui.laydate;
+                    var  layForm = layui.form
+                    //执行一个laydate实例
+                    laydate.render({
+                    elem: '#test1' //指定元素
+                    });
+                });
+            },
+    		methods:{
+    			get_person:function(){
+ 					var _this=this
+ 		   			$.ajax({
+    					url:"http://cloud.meshmellow.cn/api/get_member.html",
+    					data:"",
+    					type:"POST",
+    					success:function(res){
+    						var response_data=eval("("+ res +")")
+    						_this.item=response_data.data
+    						_this.nickname=_this.item.nickname
+    						_this.isVip=_this.item.isVip
+    						_this.out_time=_this.item.out_time;
+                            if(parseInt(_this.item.sex)==1){
+                                _this.sex="男"
+                            }else if(parseInt(_this.item.sex)==2){
+                                _this.sex="女"
+                            }else{
+                                _this.sex="未知"
+                            }
+    						
+    					}
+    				})
+ 		   			// return _this.nickname
+    			},
+                get_baseuser:function(){
+                    var _this=this;
+                    $.ajax({
+                        url:"http://cloud.meshmellow.cn/api/get_baseuser_info.html",
+                        data:"",
+                        type:"POST",
+                        success:function(res){
+                            var get_user_01=eval("(" + res + ")")
+                            var get_user=get_user_01.data;
+                            _this.realname=get_user.realname;
+                            _this.birth=get_user.birthyear+"-"+get_user.birthmonth+"-"+get_user.birthday;
+                            _this.graduateschool=get_user.graduateschool;
+                            // _this.mobile=get_user.mobile;
+                            var get_mobile=get_user.mobile;
+                            var reserve_data=document.getElementById("reserve_data")
+                            reserve_data.value=get_user.mobile;
+                            _this.email=get_user.email;
+                            var change_mobile_01=get_mobile.split("");
+                            change_mobile_01.splice(3,4,"****");
+                            _this.mobile=change_mobile_01.join("");
+
+                        }
+                    })
+                },
+                //获取编辑时的数据
+                show_edit_page:function(){
+                    var _this=this;
+                    $(function(){
+                        $(".get_page").hide()
+                        $(".edit_page").show()
+                    })
+                },
+                sub_a:function(){
+                    var _this=this;
+                    var ipt_arr=$("#myform p input");
+                    var value_arr=[];
+                    var ipt_get_placeholder;
+                    var ipt_get_value;
+                    var aa=[];
+                    var bb=[];
+                    for(var i=0;i<ipt_arr.length;i++){
+                         ipt_get_placeholder=ipt_arr[i].placeholder;
+                         aa.push(ipt_get_placeholder)
+                         ipt_get_value=ipt_arr[i].value;
+                         bb.push(ipt_get_value)
+                         if(ipt_get_value==""||ipt_get_value==null||ipt_get_value==undefined){
+                             value_arr.push(ipt_get_placeholder);
+                         }else{
+                             value_arr.push(ipt_get_value);
+                         }
+                    }
+                    // 循环获取value和placeholder组成的新的数组
+                    var username=value_arr[0];
+                    var sex;
+                    if(value_arr[1]=="男"){
+                        sex=1
+                    }else if(value_arr[1]=="女"){
+                        sex=2
+                    }else{
+                        sex=0
+                    }
+                    //判断sex值
+                    var realname=value_arr[2];
+                    var birth=value_arr[3];
+                    var birth_arr=birth.split("-");
+                    var birthyear=birth_arr[0];
+                    var birthmonth=birth_arr[1];
+                    var birthday=birth_arr[2];
+                    var graduateschool=value_arr[4];
+                    var account_ipt=document.getElementById("account_ipt");
+                    var re=/^1[3456789]\d{9}$/;
+                    if(account_ipt.value.length==11){
+                        if(re.test(account_ipt.value)){
+                            var mobile=value_arr[5];
+                        }else{
+                            alert('填写的手机号码不正确')
+                            account_ipt.value="";
+                            return false
+                        }
+                    }else if(account_ipt.value.length==0&&account_ipt.placeholder.length==11){
+                          var reserve_data=document.getElementById("reserve_data")
+                          var mobile= reserve_data.value
+                    }else{
+                        alert('填写的手机号码不正确')
+                        account_ipt.value="";
+                        return false
+                    }//判断编辑时判断是否有给value值
+                    
+                    var email=value_arr[6];
+                    var re_email = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/
+                    if(re_email.test(email)){
+                        var email=value_arr[6];
+                    }else{
+                        alert("填写的邮箱格式不正确");
+                        return false
+                    }
+                    $.ajax({
+                        url:"http://cloud.meshmellow.cn/api/set_baseuser_info.html",
+                        data:{
+                          realname:realname,
+                          graduateschool:graduateschool,
+                          mobile:mobile,
+                          email:email,
+                          birthyear:birthyear,
+                          birthmonth:birthmonth,
+                          birthday:birthday
+                        },
+                        type:"POST",
+                        success:function(res){
+                         $.ajax({
+                            url:"http://cloud.meshmellow.cn/api/edituserinfo.html",
+                            data:{
+                               key:"sex",
+                               value:sex, 
+                            },
+                            type:"POST",
+                            success:function(res){
+                                edit_uername(username)
+                                //单独请求昵称
+                            } 
+                         })
+                        }
+                    })
+
+                },
+                //保存时提交
+                cancel_a:function(){
+                    $(".get_page").show()
+                    $(".edit_page").hide()
+                }
+    		},
+    		
+    	})
+    </script>
+{include file="common/footer"}
